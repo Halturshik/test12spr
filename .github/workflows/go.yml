@@ -1,7 +1,8 @@
 name: Go
 
 on:
-  workflow_dispatch:
+  push:
+    branches: ["main"]
 
 jobs:
 
@@ -45,3 +46,12 @@ jobs:
 
     - name: Test
       run: go test -race -v ./...
+
+  lint:
+    needs: [tests, tests-race]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+      - uses: golangci/golangci-lint-action@v3 
